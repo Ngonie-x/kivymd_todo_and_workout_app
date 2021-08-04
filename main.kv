@@ -1,0 +1,456 @@
+# main.kv
+
+ScreenManagement:
+    LoginScreen:
+    SignupScreen:
+    MainWindow:
+
+
+
+# Custom defined pill
+<ListItemWithChip>:
+    theme_text_color: "Custom"
+    text_color: 1, 1, 1, 1
+
+
+
+
+
+<LoginScreen>:
+    name: 'login'
+    MDCard:
+        orientation: 'vertical'
+        size_hint: .5, .8
+        pos_hint: {"center_x": .5, "center_y": .5}
+
+        
+
+        FitImage:
+            source: 'images/undraw_authentication_fsn5.png'
+            width: root.width
+            size_hint_y: .4
+
+
+        MDBoxLayout:
+            id: form
+            orientation: 'vertical'
+            size_hint_y: .3
+            width: root.width
+
+            MDTextField:
+                id: email
+                pos_hint: {"center_x": .5,}
+                size_hint_x: .7
+                hint_text: 'Email Address'
+                mode: 'rectangle'
+
+            MDTextField:
+                id: password
+                pos_hint: {"center_x": .5,}
+                size_hint_x: .7
+                hint_text: 'Password'
+                mode: 'rectangle'
+                
+        MDBoxLayout:
+            size_hint_y: .15
+            width: root.width
+
+
+            MDBoxLayout:
+                # pos_hint: {'y': .05,}
+                size_hint: .5, None
+
+                MDCheckbox:
+                    id: keepmeloggedin
+                        
+                MDLabel:
+                    text: "Keep me logged in"
+                
+            MDBoxLayout:
+                size_hint_x: .1
+
+
+            MDBoxLayout:
+                pos_hint: {'y': .40,}
+                size_hint: .3, None
+
+
+                MDRaisedButton:
+                    text: 'Login'
+                    theme_text_color: 'Custom'
+                    color: (1, 0, 0, 1)
+
+                    on_release:
+                        app.switch_window('mainwindow', root.login())
+
+
+        MDBoxLayout:
+            size_hint_y: .15
+            width: root.width
+
+            MDBoxLayout:
+                size_hint_x: .12
+
+
+            MDBoxLayout:
+                pos_hint: {'y': .1,}
+                size_hint: .48, None
+
+                MDLabel:
+                    pos_hint:{'center_x': .3}
+                    text: "Don't have an account?"
+                
+
+
+            MDBoxLayout:
+                pos_hint: {'y': .5,}
+                size_hint: .4, None
+
+
+                MDFlatButton:
+                    text: 'Create Account'
+                    theme_text_color: 'Custom'
+                    text_color: app.theme_cls.primary_color
+
+                    on_release:
+                        app.root.current = 'signup'
+                        root.manager.transition.direction = "left"
+
+<SignupScreen>:
+    name: 'signup'
+    MDCard:
+        orientation: 'vertical'
+        size_hint: .5, .8
+        pos_hint: {"center_x": .5, "center_y": .5}
+
+        
+
+        FitImage:
+            source: 'images/undraw_welcome_cats_thqn.png'
+            width: root.width
+            size_hint_y: .4
+
+
+        MDBoxLayout:
+            id: form
+            orientation: 'vertical'
+            size_hint_y: .3
+            width: root.width
+
+            MDTextField:
+                id: email
+                pos_hint: {"center_x": .5,}
+                size_hint_x: .7
+                hint_text: 'Email Address'
+                mode: 'rectangle'
+
+            MDTextField:
+                id: password
+                pos_hint: {"center_x": .5,}
+                size_hint_x: .7
+                hint_text: 'Password'
+                mode: 'rectangle'
+                
+        MDBoxLayout:
+            size_hint_y: .15
+            width: root.width
+
+
+            MDBoxLayout:
+                # pos_hint: {'y': .05,}
+                size_hint: .5, None
+
+                MDCheckbox:
+                    on_active: root.enable_signup_btn()
+                        
+                MDLabel:
+                    text: "I agree to terms and conditions"
+                
+            MDBoxLayout:
+                size_hint_x: .1
+
+
+            MDBoxLayout:
+                pos_hint: {'y': .40,}
+                size_hint: .3, None
+
+
+                MDRaisedButton:
+                    id: signupbtn
+                    text: 'Sign Up'
+                    theme_text_color: 'Custom'
+                    color: (1, 0, 0, 1)
+                    disabled: True
+
+                    on_release:
+                        app.switch_window('login', root.create_user())
+                        root.manager.transition.direction = "right"
+
+
+        MDBoxLayout:
+            size_hint_y: .15
+            width: root.width
+
+            MDBoxLayout:
+                size_hint_x: .12
+
+
+            MDBoxLayout:
+                pos_hint: {'y': .1,}
+                size_hint: .48, None
+
+                MDLabel:
+                    pos_hint:{'center_x': .3}
+                    text: "Already have an account?"
+                
+
+
+            MDBoxLayout:
+                pos_hint: {'y': .5,}
+                size_hint: .4, None
+
+
+                MDFlatButton:
+                    text: 'Login'
+                    theme_text_color: 'Custom'
+                    text_color: app.theme_cls.primary_color
+
+                    on_release:
+                        app.root.current = 'login'
+                        root.manager.transition.direction = "right"
+
+
+<InvalidLoginPopup>:
+    orientation: 'vertical'
+    spacing: '10dp'
+    size_hint: None, None
+    height: "130dp"
+    width: "230dp"
+
+    MDLabel:
+        text: "Incorrect username or password."
+        font_style: "H6"
+
+    MDLabel:
+        text: 'You have entered invalid details. Please try again'
+        theme_text_color: "Custom"
+        text_color: 1, 0, 0, 1
+
+    MDLabel:
+
+
+<UsernameAlreadyExists>:
+    orientation: 'vertical'
+    spacing: '10dp'
+    size_hint: None, None
+    height: "130dp"
+    width: "230dp"
+
+    MDLabel:
+        text: "Username already exists."
+        font_style: "H6"
+
+    MDLabel:
+        text: 'The username you have entered already exists, please try another one.'
+        theme_text_color: "Custom"
+        text_color: 1, 0, 0, 1
+
+    MDLabel:
+
+
+
+<MainWindow>:
+    name: 'mainwindow'
+    id: mainwindow
+
+    MDBoxLayout:
+        orientation: "horizontal"
+        width: root.width
+        height: root.height
+
+
+        MDFloatLayout:
+            
+            size_hint: .3, 1
+            md_bg_color: app.theme_cls.primary_color
+            height: root.height
+
+            MDLabel:
+                pos_hint: {'y':.40, 'x': .02}
+                text: "Get-Intense"
+                font_style: "H5"
+                theme_text_color: "Custom"
+                text_color: 1, 1, 1, 1
+
+
+            #email address
+            MDLabel:
+                id: emaillbl
+                pos_hint: {'y':.35, 'x': .02}
+                theme_text_color: "Custom"
+                text_color: 1, 1, 1, 1
+
+
+            MDList:
+                pos_hint: {'y':.3,}
+
+                # Tasks
+                ListItemWithChip:
+                    text: 'Tasks'
+                    IconLeftWidget:
+                        icon: 'checkbox-marked-circle-outline'
+                        theme_text_color: "Custom"
+                        text_color: 1, 1, 1, 1
+
+                    CustomPill:
+                        id: taskspill
+                        pos_hint: {'center_x':.1, 'center_y':.5}
+                        text: '0'
+                        icon: ''
+                        # md_bg_color: 
+                        color: '#5f27cd'
+                        theme_text_color: "Custom"
+                        text_color: 1, 1, 1, 1
+
+                        
+
+
+                # Exercises
+                ListItemWithChip:
+                    text: 'Exercises'
+                    IconLeftWidget:
+                        icon: 'weight-lifter'
+                        theme_text_color: "Custom"
+                        text_color: 1, 1, 1, 1
+
+                    CustomPill:
+                        pos_hint: {'center_x':.1, 'center_y':.5}
+                        text: '0'
+                        icon: ''
+                        # md_bg_color: 
+                        color: '#5f27cd'
+                        theme_text_color: "Custom"
+                        text_color: 1, 1, 1, 1
+
+
+                # streaks
+                ListItemWithChip:
+                    text: 'Streaks'
+                    IconLeftWidget:
+                        icon: 'trending-up'
+                        theme_text_color: "Custom"
+                        text_color: 1, 1, 1, 1
+
+                    CustomPill:
+                        pos_hint: {'center_x':.1, 'center_y':.5}
+                        text: '0'
+                        icon: ''
+                        # md_bg_color: 
+                        color: '#5f27cd'
+                        theme_text_color: "Custom"
+                        text_color: 1, 1, 1, 1
+
+
+                # settings
+                ListItemWithChip:
+                    text: 'Settings'
+                    IconLeftWidget:
+                        icon: 'cog-outline'
+                        theme_text_color: "Custom"
+                        text_color: 1, 1, 1, 1
+
+                # Log out
+                ListItemWithChip:
+                    text: 'Log Out'
+                    on_release:
+                        root.logout()
+                        app.root.current = 'login'
+                        root.manager.transition.direction = "left"
+                    IconLeftWidget:
+                        icon: 'logout'
+                        theme_text_color: "Custom"
+                        text_color: 1, 1, 1, 1
+                    
+                    
+
+
+
+
+        
+        MDFloatLayout:
+            size_hint: .7, 1
+            id: taskscreen
+            height: root.height
+            # md_bg_color: app.theme_cls.accent_color
+
+
+
+            # text input to add tasks
+            MDTextField:
+                id: taskinput
+                size_hint_x: .8
+                pos_hint: {'center_x': .5, 'y': .9}
+                hint_text: 'Add Task'
+                mode: 'rectangle'
+                text_validate_unfocus: False
+                on_text_validate: 
+                    root.add_task(taskinput.text)
+
+
+            ScrollView:
+                pos_hint: {'center_x': .5, 'y': .38}
+                size_hint: .9, .5
+                    
+
+
+                MDList:
+                    id: taskslist
+
+            
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                id: box
+                size_hint: .9, .35
+                pos_hint: {'center_x': .5, 'y': .01}
+
+
+
+
+<ListItemWithCheckbox>:
+    id: the_list_item
+
+    # on_release: app.show_detail(the_list_item)
+
+    LeftCheckbox:
+        on_release: 
+            # And now to call on the ancestors😂
+            root.parent.parent.parent.parent.parent.mark(check, the_list_item) if check.active == True  else root.parent.parent.parent.parent.parent.parent.parent.parent.mark(check, the_list_item)
+            #was honestly looking for a better way to do this⬆ but I kinda got lazy after some research
+        id: check
+
+
+    IconRightWidget:
+        icon: 'trash-can-outline'
+        theme_text_color: "Custom"
+        text_color: 1, 0, 0, 1
+        on_release:
+            # terrible code again
+            root.parent.parent.parent.parent.parent.parent.parent.parent.delete_item(check, the_list_item) if check.active == True  else root.parent.parent.parent.parent.parent.delete_item(check, the_list_item)
+
+
+
+
+
+<CustomExpansionPanel>:
+    orientation: "vertical"
+    adaptive_height: True
+    
+
+    ScrollView:
+        
+        MDList:
+            id: donetasks
+            
+
+
